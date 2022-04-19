@@ -33,6 +33,36 @@ public class searcher {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	double CalcSim(int id) throws ClassNotFoundException, IOException {
+		double result=0.0;
+		
+		double[] wgt = new double[kw.size()];
+		HashMap hashMap = getFile();
+		
+		for(int i=0;i<kw.size();i++) {
+			Iterator<String> iter = hashMap.keySet().iterator();
+			while(iter.hasNext()) {
+				String key = iter.next();
+				if(key.equals(kw.get(i))) {
+					String value = (String) hashMap.get(key);
+					double w = splitValue(id, value);
+					if(w!=-1) {
+						wgt[i] = w * (double)tf.get(i);
+						iter.remove();
+						break;
+					}
+				}
+			}
+		}
+		
+		for(int i=0;i<kw.size();i++) {
+			result += wgt[i];
+		}
+		
+		return result;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	double CalcSim_master(int id) throws ClassNotFoundException, IOException {
 		double result=0.0;
 		
@@ -88,14 +118,14 @@ public class searcher {
 		return 0;
 	}
 	
-	void printSim_master() throws ClassNotFoundException, IOException, SAXException, ParserConfigurationException {
+void printSim() throws ClassNotFoundException, IOException, SAXException, ParserConfigurationException {
 		
 		kkma();
 		
 		double[] sim = new double[idNum];
 		int[] index = {0,1,2,3,4};
 		for(int i=0;i<sim.length;i++) {
-			sim[i] = CalcSim_master(i);
+			sim[i] = CalcSim(i);
 		}
 		
 		for(int i=0;i<sim.length-1;i++) {
@@ -126,6 +156,50 @@ public class searcher {
 		}
 		
 	}
+
+	void printSim_master() throws ClassNotFoundException, IOException, SAXException, ParserConfigurationException {
+	
+	kkma();
+	
+	double[] sim = new double[idNum];
+	int[] index = new int[idNum];
+	for(int i=0;i<idNum;i++) {
+		index[i]=i;
+	}
+	
+	for(int i=0;i<sim.length;i++) {
+		sim[i] = CalcSim(i);
+	}
+	
+	for(int i=0;i<sim.length-1;i++) {
+		for(int k=0;k<sim.length-1;k++) {
+			if(sim[k]<sim[k+1]) {
+				double temp1=sim[k];
+				sim[k]=sim[k+1];
+				sim[k+1]=temp1;
+				int temp2=index[k];
+				index[k]=index[k+1];
+				index[k+1]=temp2;
+			}
+		}
+	}
+	
+	if(sim[0]==0.0) {
+		System.out.println("검색된 문서가 없습니다.");
+	}
+	else {
+		for(int i=0;i<3;i++) {
+			if(sim[i]==0.0)
+				break;
+			else {
+				System.out.printf("%d등 ", i+1);
+				System.out.print(getName(index[i]));
+				System.out.printf(" (doc id=%d), 유사도 : %.2f\n",index[i], sim[i]);
+			}
+		}
+	}
+	
+}
 
 	String getName(int id) throws SAXException, IOException, ParserConfigurationException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

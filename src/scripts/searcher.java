@@ -33,7 +33,7 @@ public class searcher {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	double CalcSim(int id) throws ClassNotFoundException, IOException {
+	double InnerProduct(int id) throws ClassNotFoundException, IOException {
 		double result=0.0;
 		
 		double[] wgt = new double[kw.size()];
@@ -63,7 +63,7 @@ public class searcher {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	double CalcSim_master(int id) throws ClassNotFoundException, IOException {
+	double CalcSim(int id) throws ClassNotFoundException, IOException {
 		double result=0.0;
 		
 		double[] wgt = new double[kw.size()];
@@ -117,15 +117,15 @@ public class searcher {
 		}
 		return 0;
 	}
-	
-void printSim() throws ClassNotFoundException, IOException, SAXException, ParserConfigurationException {
-		
+
+	void printSim_Inner() throws ClassNotFoundException, IOException, SAXException, ParserConfigurationException {
+
 		kkma();
 		
 		double[] sim = new double[idNum];
 		int[] index = {0,1,2,3,4};
 		for(int i=0;i<sim.length;i++) {
-			sim[i] = CalcSim(i);
+			sim[i] = InnerProduct(i);
 		}
 		
 		for(int i=0;i<sim.length-1;i++) {
@@ -157,7 +157,7 @@ void printSim() throws ClassNotFoundException, IOException, SAXException, Parser
 		
 	}
 
-	void printSim_master() throws ClassNotFoundException, IOException, SAXException, ParserConfigurationException {
+	void printSim() throws ClassNotFoundException, IOException, SAXException, ParserConfigurationException {
 	
 	kkma();
 	

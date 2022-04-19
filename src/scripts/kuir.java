@@ -1,4 +1,4 @@
-package sw;
+package scripts;
 
 import java.io.IOException;
 
@@ -43,9 +43,5 @@ public class kuir {
 			else
 				System.out.println("Query doesn't exist");
 		}
-		
 	}
-	
-
 }
-

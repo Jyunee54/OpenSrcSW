@@ -1,11 +1,9 @@
-package sw;
+package scripts;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -26,9 +24,10 @@ public class searcher {
 	String route;
 	String query;
 	ArrayList<Integer> tf = new ArrayList<>();
+	ArrayList<String> kw = new ArrayList<>();
 	int idNum = 5;
 	
-	public searcher(String path, String query) {
+	public searcher(String path, String query) throws ClassNotFoundException, IOException, SAXException, ParserConfigurationException {
 		this.route = path;
 		this.query = query;
 	}
@@ -36,9 +35,7 @@ public class searcher {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	double CalcSim(int id) throws ClassNotFoundException, IOException {
 		double result=0.0;
-		ArrayList<String> kw = new ArrayList<>();
 		
-		kw = kkma();
 		double[] wgt = new double[kw.size()];
 		HashMap hashMap = getFile();
 		
@@ -77,9 +74,10 @@ public class searcher {
 	
 	void printSim() throws ClassNotFoundException, IOException, SAXException, ParserConfigurationException {
 		
+		kkma();
+		
 		double[] sim = new double[idNum];
 		int[] index = {0,1,2,3,4};
-		
 		for(int i=0;i<sim.length;i++) {
 			sim[i] = CalcSim(i);
 		}
@@ -112,7 +110,7 @@ public class searcher {
 		}
 		
 	}
-	
+
 	String getName(int id) throws SAXException, IOException, ParserConfigurationException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = factory.newDocumentBuilder();
@@ -145,18 +143,15 @@ public class searcher {
 		return hashMap;
 	}
 	
-	ArrayList<String> kkma() {		//query keyword 추출
+	void kkma() {		//query keyword 추출
 		KeywordExtractor ke = new KeywordExtractor();
 		KeywordList kl = ke.extractKeyword(query, true);
-		ArrayList<String> keyword = new ArrayList<>();
 		
 		for(int i=0;i<kl.size();i++) {
 			Keyword kwrd = kl.get(i);
-			keyword.add(kwrd.getString());
+			kw.add(kwrd.getString());
 			tf.add(kwrd.getCnt());
 		}
-		
-		return keyword;
 	}
 	
 }

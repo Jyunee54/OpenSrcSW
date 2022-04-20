@@ -74,7 +74,5 @@ public class makeCollection {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-
 	}
-
 }

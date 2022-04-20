@@ -160,7 +160,5 @@ public class indexer {
 			String value = (String) hashMap.get(key);
 			System.out.println(key+" → "+ value);
 		}
-		
 	}
-	
 }

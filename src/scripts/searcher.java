@@ -243,5 +243,4 @@ public class searcher {
 			tf.add(kwrd.getCnt());
 		}
 	}
-	
 }

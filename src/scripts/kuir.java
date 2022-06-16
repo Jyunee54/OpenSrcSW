@@ -43,5 +43,15 @@ public class kuir {
 			else
 				System.out.println("Query doesn't exist");
 		}
+		else if(command.equals("-m")) {
+			String path = "./file/"+args[1];
+			if(args[2].equals("-q")) {
+				String query = args[3];
+				MidTerm midterm = new MidTerm(path, query);
+				
+			}
+			else
+				System.out.println("Query doesn't exist");
+		}
 	}
 }
